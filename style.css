@@ -6,11 +6,16 @@
     margin: 5% auto auto auto;
     padding: 15px;
     box-sizing: border-box;
+    flex-wrap: wrap;
 }
 
 .display {
     display: flex;
-    flex: 1 0 auto;
+    flex: 1 1 auto;
     border: 1px solid black;
     font-size: 50px;
+}
+
+.buttons {
+    display: flex;
 }
