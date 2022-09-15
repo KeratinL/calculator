@@ -60,3 +60,8 @@ html calculator
 Container
 display
 buttons
+
+move display down
+lessen margin between rows 
+
+.bottom  may need to be column direction as well
