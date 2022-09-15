@@ -1,21 +1,50 @@
 .container {
-    display: flex;
     border: 1px solid black;
-    height: 750px;
+    height: 700px;
     width: 500px;
     margin: 5% auto auto auto;
-    padding: 15px;
+    padding: 30px;
     box-sizing: border-box;
-    flex-wrap: wrap;
+    background-color: darkgrey;
+    border-radius: 25px;
+
 }
 
 .display {
     display: flex;
     flex: 1 1 auto;
     border: 1px solid black;
-    font-size: 50px;
+    font-size: 75px;
+    height: 125px;
+    width: 97.8%;
+    justify-content: end;
+    align-items: center;
+    padding-right: 10px;
+    background-color: orange;
+    border-radius: 10px;
+
 }
 
 .buttons {
     display: flex;
+    flex-wrap: wrap;
+    margin-top: 35px;
+    gap: 10px;
+}
+
+.buttons div {
+    display: flex;
+    border: 3px solid teal;
+    height: 80px;
+    width: 96px;
+    border-radius: 10px;
+    justify-content: center;
+    align-items: center;
+    margin: 10px 0px;
+}
+
+.equal {
+    display: flex;
+    flex: 1 0 0;
+    height: 160px;
 }
