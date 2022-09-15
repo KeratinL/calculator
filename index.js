@@ -30,7 +30,7 @@ function multiply(...args) {
     return product;
 }
 
-console.log(multiply(12, 32, 321))
+//console.log(multiply(12, 32, 321))
 
 function divide(...args) {
     let quotient = args[0];
@@ -43,3 +43,21 @@ function divide(...args) {
 }
 
 //console.log(divide(100, 2, 5));
+
+function operate(num, operator, num2) {
+    let total = 0;
+    switch (true) {
+        case operator === '+':
+            return total = add(num, num2);
+        case operator === '-':
+            return total = subtract(num, num2);
+        case operator === '*':
+            return total = multiply(num, num2);
+        case operator === '/':
+            return total = divide(num, num2);
+        default:
+            alert('Invalid Input');
+    };
+}
+
+//console.log(operate(55, '/', 1000));

@@ -35,3 +35,28 @@ Users can get floating point numbers if they do the math required to get one, bu
 Make it look nice! This is a great project to practice your CSS skills. At least make the operations a different color from the keypad buttons.
 Add a “backspace” button, so the user can undo if they click the wrong number.
 Add keyboard support!
+
+create a switch statement that checks if an operator is equal to one of the functions
+for each case call the corresponding function while passing in the number arguments
+will I need a default? 
+
+general calculator layout
+
+on click or keyboard event store keyed or clicked value in an array
+
+on equal event send array to operate function. //This is tricky. The operate function only takes 3 parameters, but there will probably be more than that in the array. How will I send only the 3 elements of an array at a time? 
+
+in operate function designate which functions are called. 
+
+in operate function store a running total for the entire operation // I don't know if I want to do all of this in the operate function. May have to refactor. // Second thought. What if I return from the operate function the total instead of storing it in the operate function. This would prevent total from being destroyed after every operate call. 
+
+take total and display on calculator. 
+
+reset 
+
+--
+
+html calculator
+Container
+display
+buttons
