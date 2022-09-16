@@ -26,33 +26,33 @@
 
 .buttons {
     display: flex;
-    flex: 1 0 auto;
+    flex: 1 1 auto;
     flex-wrap: wrap;
     width: 438px;
-    height: 450px;
+    height: 440px;
 }
-
-
 
 .top {
     display: flex;
     flex: 1 1 auto;
+    height: 190px;
     width: 100%;
     flex-wrap: wrap;
     gap: 10px;
     align-content: flex-start;
     margin-top: 30px;
+    margin-bottom: 10px;
 }
 
 .bottom {
     display: flex;
     flex-wrap: wrap;
-    flex-direction: column;
     align-content: flex-start;
     flex: 0 1 auto;
-    height: 220px;
+    height: 190px;
+    width: 326px;
     gap: 10px;
-    margin-top: 10px;
+    margin-right: 10px;
 }
 
 .top div {
@@ -80,7 +80,19 @@
     box-sizing: border-box;
 }
 
-.bottom .equal {
+.low {
+    display: flex;
+}
+
+.equal {
     height: 190px;
+    display: flex;
+    flex: 1 1 auto;
+    border: 3px solid teal;
+    height: 190px;
+    width: 102px;
+    border-radius: 10px;
+    justify-content: center;
+    align-items: center;
     box-sizing: border-box;
 }
