@@ -1,0 +1,52 @@
+html{
+    box-sizing: border-box;
+
+}
+
+#container {
+    height: 650px;
+    width: 500px;
+    background-color: #6C6868;
+    margin: auto;
+    border-radius: 2%;
+    box-shadow: 10px 10px 5px #3b3b3b;
+}
+
+#display {
+    height: 100px;
+    width: 85%;
+    margin: auto;
+    padding: 37.5px;
+    display: flex;
+    justify-content: center;
+}
+
+.numDisplay {
+    flex: 1;
+    border: solid 2px black;
+    background-color: #5c6b28;
+}
+
+#buttons {
+    display: flex;
+    margin: auto;
+    flex-wrap: wrap;
+    padding: 37.5px;
+    padding-top: 7.75px;
+
+    gap: 10px;
+}
+
+button{
+    flex: 1 0 auto;
+    height: 98px;
+    width: 98px;
+    border: 0;
+    padding: 0;
+    border-radius: 5%;
+    background-color: #faebd7;
+}
+
+.equal {
+    background-color: #e5771e;
+}
