@@ -10,13 +10,14 @@ html{
     margin: auto;
     border-radius: 2%;
     box-shadow: 10px 10px 5px #3b3b3b;
+    padding: 37.5px;
+    box-sizing: border-box;
 }
 
 #display {
     height: 100px;
-    width: 85%;
-    margin: auto;
-    padding: 37.5px;
+    width: 100%;
+    margin: 0px auto 37.5px auto;
     display: flex;
     justify-content: center;
 }
@@ -29,18 +30,24 @@ html{
 
 #buttons {
     display: flex;
-    margin: auto;
+    margin: 10px auto 0px auto;
     flex-wrap: wrap;
-    padding: 37.5px;
-    padding-top: 7.75px;
-
     gap: 10px;
+}
+
+#functions {
+    display: flex;
+    gap: 10px;
+}
+
+#functions button{
+    flex: 1 0 auto;
 }
 
 button{
     flex: 1 0 auto;
-    height: 98px;
-    width: 98px;
+    height: 79.5px;
+    width: 86px;
     border: 0;
     padding: 0;
     border-radius: 5%;
@@ -49,4 +56,9 @@ button{
 
 .equal {
     background-color: #e5771e;
+}
+
+.backspace {
+    font-size: 40px;
+    padding-bottom: 14px;
 }
