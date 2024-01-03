@@ -20,12 +20,17 @@ html{
     margin: 0px auto 37.5px auto;
     display: flex;
     justify-content: center;
+    text-overflow: clip;
 }
 
 .numDisplay {
     flex: 1;
     border: solid 2px black;
     background-color: #5c6b28;
+    font-size: 90px;
+    line-height: 100px;
+    overflow: hidden;
+    text-align: right;
 }
 
 #buttons {
