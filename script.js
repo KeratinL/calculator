@@ -16,16 +16,15 @@ const multiply = document.querySelector(".multiply");
 
 const divide = document.querySelector(".divide");
 
-const input = document.querySelector("input");
+const decimal = document.querySelector(".decimal");
 
-input.addEventListener('keydown', (e) => {
-    console.log(e.key);
-    console.log(input.value)
-    console.log(numDisplay.innerText);
-    
-})
+let counter = 0;
+
+let lastUsed = '';
 
 let disArray = [];
+
+let numString = '1,2,3,4,5,6,7,8,9,0';
 
 if (numDisplay.innerText == "") {
     add.disabled = true;
@@ -33,38 +32,8 @@ if (numDisplay.innerText == "") {
     divide.disabled = true;
     equals.disabled = true;
 }
-
-//click a button, read inner text, add it to num display.
-//check if class is equal to clear, backspace, or equal. Use a switch statement if true
-//switch statment will call a function for each.
-//Else add text to display. 
-//Create evaluation function that will be called on operators and equals and check if dividing by 0
-//Create clear and backspace functions 
-
-
-function evaluation(mathExpression, targetText) {
-
-    // if (!mathExpression.length > 4) {
-    //     if (mathExpression.includes("+")) {
-    //         mathExpression.splice(mathExpression.indexOf("+"), 0, " ");
-    //         mathExpression.splice(mathExpression.indexOf("+") + 1, 0, " ");
-    //     }
-    //     else if (mathExpression.includes("*")) {
-    //         mathExpression.splice(mathExpression.indexOf("*"), 0, " ");
-    //         mathExpression.splice(mathExpression.indexOf("*") + 1, 0, " ");
-    //     }
-    //     else if (mathExpression.includes("/")) {
-    //         mathExpression.splice(mathExpression.indexOf("/"), 0, " ");
-    //         mathExpression.splice(mathExpression.indexOf("/") + 1, 0, " ");
-    //     }
-    //     else if (mathExpression.includes("-")) {
-    //         mathExpression.splice(mathExpression.indexOf("-"), 0, " ");
-    //         mathExpression.splice(mathExpression.indexOf("-") + 1, 0, " ");
-    //     }
-    // }
-
-
-    let str = mathExpression.join("");
+function evaluation(expressionArray) {
+    let str = '';
 
     function Calculator() {
         this.methods = {
@@ -95,135 +64,125 @@ function evaluation(mathExpression, targetText) {
         numDisplay.innerText = text + targetText;
         disArray = [];
     }
+
 }
 
-    function getValue(targetText) {
-        if (disArray.length == 4) {
-            const tempArray = numDisplay.innerText.split(`${targetText}`);
-            disArray.push(tempArray[tempArray.length - 1]);
-            numDisplay.innerText += targetText;
-            evaluation(disArray, targetText);
-        }
-        else if (parseFloat((numDisplay.innerText))) {
-            disArray.push(parseFloat(numDisplay.innerText), ' ', '-', ' ');
-            numDisplay.innerText += targetText;
 
-        }
-        else numDisplay.innerText += targetText;
+// function getValue(targetText) {
+//     if (disArray.length == 4) {
+//         const tempArray = numDisplay.innerText.split(`${targetText}`);
+//         disArray.push(tempArray[tempArray.length - 1]);
+//         numDisplay.innerText += targetText;
+//         evaluation(disArray, targetText);
+//     }
+//     else if (parseFloat((numDisplay.innerText))) {
+//         disArray.push(parseFloat(numDisplay.innerText), ' ', '-', ' ');
+//         numDisplay.innerText += targetText;
 
+//     }
+//     else numDisplay.innerText += targetText;
 
+// }
 
-        //Old Way1
-        //     if (disArray.length < 4) {
-        //         if (!isNaN(+numDisplay.innerText) && numDisplay.innerText != targetText) {
-        //             disArray = [numDisplay.innerText, ' ', targetText, ' '];
-        //             numDisplay.innerText += targetText;
-        //         }
-        //         else {
-        //             const mathExpression = numDisplay.innerText.split('-');
-        //             if (mathExpression.length <= 2) {
-
-
-        //                 disArray = [mathExpression[0]]
-        //             }
-
-        //             else {
-        //                 console.log("look here")
-        //                 evaluation(mathExpression);
-        //             }
-
-        //         }
-
-
-        //     // else {
-        //     //         let tempArray = numDisplay.innerText.split(`${targetText}`);
-        //     //         console.log(tempArray);
-        //     //         disArray.push(tempArray[tempArray.length - 1]);
-        //     //         evaluation(disArray);
-        //     //     }
-
-        //      }
+keypad.addEventListener('click', (e) => {
+    let keyTarget = e.target;
+    if (keyTarget.innerText == ".") numDisplay.innerText += keyTarget.innerText;
+    if (numDisplay.innerText != ".") {
+        add.disabled = false;
+        multiply.disabled = false;
+        divide.disabled = false;
+        equals.disabled = false;
     }
-    //On empty input disable =, /, + *; 
-    //If an - operator is clicked add it to display input and check if it contains an integer. 
-    //If it doesn't add operator innerText to numDisplay
-    //If it does add the number and operator to an array and add operator to display. 
-    // -34 - 34 - split on operators and assign to new array variable
-    // add last array variable to global array. 
-    //Use evaluate to finish calculation
 
-    keypad.addEventListener('click', (e) => {
-        let keyTarget = e.target;
-        if (!numDisplay.innerText == "") {
-            add.disabled = false;
-            multiply.disabled = false;
-            divide.disabled = false;
-            equals.disabled = false;
+    if(numString.includes(keyTarget.innerText)){
+        numDisplay.innerText += keyTarget.innerText;
+    }
+
+    if (keyTarget.innerText == '-' && numDisplay.innerText == '') {
+        numDisplay.innerText += '-';
+    }
+
+    else if (keyTarget.innerText == '-' ||
+        keyTarget.innerText == '+' ||
+        keyTarget.innerText == '/' ||
+        keyTarget.innerText == '*') {
+        counter++;
+        numDisplay.innerText += keyTarget.innerText;
+    }
+    else if (keyTarget.innerText == 'C') {
+        numDisplay.innerText = '';
+        if (numDisplay.innerText == "") {
+            add.disabled = true;
+            multiply.disabled = true;
+            divide.disabled = true;
+            equals.disabled = true;
         }
+        disArray = [];
+    }
+    else if (keyTarget.className == 'backspace') {
+        numDisplay.innerText = numDisplay.innerText.slice(0, numDisplay.innerText.length - 1);
+    }
+    if (counter == 1 && (keyTarget.innerText == '-' ||
+        keyTarget.innerText == '+' ||
+        keyTarget.innerText == '/' ||
+        keyTarget.innerText == '*')) {
+        lastUsed = keyTarget.innerText;
+        let tempArray = numDisplay.innerText.split(keyTarget.innerText);
+        disArray = [tempArray[0], ' ', keyTarget.innerText, " "];
+    }
+//check here
+    if (counter == 2 && keyTarget.innerText == '=') {
+        lastUsed = keyTarget.innerText;
+        counter = 0;
+        let tempArray = numDisplay.innerText.split(`${lastUsed}`);
+        disArray.push(tempArray[tempArray.length - 2]);
+        evaluation();
+    }
 
-        if (keyTarget.innerText == '-') {
-            //old way
-            //if (!numDisplay.innerText.includes(keyTarget.innerText)) numDisplay.innerText += keyTarget.innerText;
-            getValue(keyTarget.innerText);
-        }
-        else if (keyTarget.innerText == 'C') {
-            numDisplay.innerText = '';
-            if (numDisplay.innerText == "") {
-                add.disabled = true;
-                multiply.disabled = true;
-                divide.disabled = true;
-                equals.disabled = true;
-            }
-            disArray = [];
-        }
-        else if (keyTarget.className == 'backspace') {
-            numDisplay.innerText = numDisplay.innerText.slice(0, numDisplay.innerText.length - 1);
-        }
-        else {
-            numDisplay.innerText += keyTarget.innerText;
-        }
-    })
+    else if (counter == 2 &&
+        (keyTarget.innerText == '-' ||
+        keyTarget.innerText == '+' ||
+        keyTarget.innerText == '/' ||
+        keyTarget.innerText == '*')) {
+        counter = 0;
+        let tempArray = numDisplay.innerText.split(`${lastUsed}`);
+        disArray.push(tempArray[tempArray.length - 2]);
+        lastUsed = keyTarget.innerText;
+        counter = 1;
+        evaluation(disArray);
+    }
 
-// equals.addEventListener('click', () => {
-//     const mathExpression = numDisplay.innerText.split('');
+})
 
-//     if (mathExpression.length <= 2) return mathExpression[0];
-//     else evaluation(mathExpression);
-
-// });
-
-// add.addEventListener('click', () => {
-//     const mathExpression = numDisplay.innerText.split('');
-
-//     if (mathExpression.length <= 2) return mathExpression[0];
-//     else evaluation(mathExpression);
-// });
-
-// // subtract.addEventListener('click', () => {
-// //     const mathExpression = numDisplay.innerText.split('');
-
-// //     if (mathExpression.length <= 2) return mathExpression[0];
-// //     else evaluation(mathExpression);
-// // });
-
-// divide.addEventListener('click', () => {
-//     console.log(numDisplay.innerText);
-
-//     const mathExpression = numDisplay.innerText.split('');
-
-//     if (mathExpression.length <= 2) return "";
-//     else evaluation(mathExpression);
-// });
-
-// multiply.addEventListener('click', () => {
-//     const mathExpression = numDisplay.innerText.split('');
-
-//     if (mathExpression.length <= 2) return "";
-//     else evaluation(mathExpression);
-// });
 
 
 
 // Use parseFloat to receive a number up until a non number. 
 
 
+//Have input go through processing after the second operator(every operator beside -)
+//And the second or third operator for -, based on if the input starts with -. 
+
+//-55+44+
+//-55-44-
+//-55-44+
+//55+55-
+
+//There can be, max, only three - and two of the other operators. 
+//Have input go through processing after the second operator(every operator beside -)
+//Counter for every time an operator is used, subtract one if the begginning operator is -?
+//Figure out how to use a regex for non numeric values. (anki)
+//Have a value that holds the last used operator. 
+//If an operator was used and it wasn't the beginning of the string, assign it to this variable.
+//split on last inputed operator. What about equal sign 
+//if it value starts with -, split on operator, but add the negative in from
+
+//Don't allow +, *, / or = to be used if the display is empty
+//if an operator is used check if it is the only character in the input. If so, do not add it
+//to the operator counter do not store operator in lastUsed variable.
+//if not, add 1 to operator count.
+//if operator count is equal to 1 and an operator was used, add the operator to the lastUsed variable
+//If operator count is equal to two and equal operator was used change operator count to 0.
+// Split display by lastUsed variable.
+//If operator count is equal to two and another operator is used, change operator count to 1,
+//split display based on lastUsed variable and assign operator to lastUsed.  
