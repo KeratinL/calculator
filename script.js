@@ -123,7 +123,6 @@ function addToDisplay(keyTarget){
 
         }
 
-
         else if (keyTarget == 'C') {
             numDisplay.innerText = '';
             if (numDisplay.innerText == "") {
@@ -135,7 +134,7 @@ function addToDisplay(keyTarget){
             counter = 0;
             disArray = [];
         }
-        else if (keyTarget.className == 'backspace') {
+        else if (keyTarget.className == 'backspace' || keyTarget == 'Backspace') {
             numDisplay.innerText = numDisplay.innerText.slice(0, numDisplay.innerText.length - 1);
         }
 
@@ -174,7 +173,9 @@ function addToDisplay(keyTarget){
 
 window.addEventListener('keydown', (e) => {
     keyTarget = e.key;
+    // console.log(keyTarget);
     if(keyTarget == 'Enter') keyTarget = '=';
+    if(keyTarget == 'Escape') keyTarget = 'C';
     addToDisplay(keyTarget);
 
 })
