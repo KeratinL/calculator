@@ -25,6 +25,11 @@ let lastUsed = '';
 let disArray = [];
 
 let numString = '1,2,3,4,5,6,7,8,9,0';
+let opString = '+, -, /, *'
+
+let opCounter = 0;
+
+let keyTarget = '';
 
 if (numDisplay.innerText == "") {
     add.disabled = true;
@@ -32,8 +37,8 @@ if (numDisplay.innerText == "") {
     divide.disabled = true;
     equals.disabled = true;
 }
-function evaluation(expressionArray) {
-    let str = '';
+
+function evaluation(expressionArray, lastUsed) {
 
     function Calculator() {
         this.methods = {
@@ -43,8 +48,8 @@ function evaluation(expressionArray) {
             "/": (a, b) => a / b,
         }
 
-        this.calculate = (str) => {
-            [a, op, b] = str.split(" ");
+        this.calculate = (expressionArray) => {
+            [a, op, b] = expressionArray;
 
             return this.methods[op](+a, +b);
         }
@@ -54,135 +59,132 @@ function evaluation(expressionArray) {
 
     numDisplay.innerText = "";
 
-    let text = parseFloat(calc.calculate(str).toFixed(4));
+    let text = parseFloat(calc.calculate(expressionArray).toFixed(4));
 
     if (text == Infinity || text == -Infinity) {
         numDisplay.innerText = 'cheeky';
         disArray = [];
     }
     else {
-        numDisplay.innerText = text + targetText;
+        numDisplay.innerText = text + lastUsed;
         disArray = [];
+        if (lastUsed == '') return '';
+        else firstSplit(lastUsed);
+
     }
 
 }
 
+function firstSplit(operator) {
+    lastUsed = operator;
+    let tempArray = numDisplay.innerText.split(operator);
+    disArray = [tempArray[0], operator];
+}
 
-// function getValue(targetText) {
-//     if (disArray.length == 4) {
-//         const tempArray = numDisplay.innerText.split(`${targetText}`);
-//         disArray.push(tempArray[tempArray.length - 1]);
-//         numDisplay.innerText += targetText;
-//         evaluation(disArray, targetText);
-//     }
-//     else if (parseFloat((numDisplay.innerText))) {
-//         disArray.push(parseFloat(numDisplay.innerText), ' ', '-', ' ');
-//         numDisplay.innerText += targetText;
 
-//     }
-//     else numDisplay.innerText += targetText;
+function addToDisplay(keyTarget){
 
-// }
+    if ((numDisplay.innerText == '0' || numDisplay.innerText == '-0') && numString.includes(keyTarget, ".")) numDisplay.innerText = "0";
+    else {
 
-keypad.addEventListener('click', (e) => {
-    let keyTarget = e.target;
-    if (keyTarget.innerText == ".") numDisplay.innerText += keyTarget.innerText;
-    if (numDisplay.innerText != ".") {
-        add.disabled = false;
-        multiply.disabled = false;
-        divide.disabled = false;
-        equals.disabled = false;
-    }
-
-    if(numString.includes(keyTarget.innerText)){
-        numDisplay.innerText += keyTarget.innerText;
-    }
-
-    if (keyTarget.innerText == '-' && numDisplay.innerText == '') {
-        numDisplay.innerText += '-';
-    }
-
-    else if (keyTarget.innerText == '-' ||
-        keyTarget.innerText == '+' ||
-        keyTarget.innerText == '/' ||
-        keyTarget.innerText == '*') {
-        counter++;
-        numDisplay.innerText += keyTarget.innerText;
-    }
-    else if (keyTarget.innerText == 'C') {
-        numDisplay.innerText = '';
-        if (numDisplay.innerText == "") {
-            add.disabled = true;
-            multiply.disabled = true;
-            divide.disabled = true;
-            equals.disabled = true;
+        if (numString.includes(keyTarget)) {
+            opCounter = 0;
+            numDisplay.innerText += keyTarget;
         }
-        disArray = [];
-    }
-    else if (keyTarget.className == 'backspace') {
-        numDisplay.innerText = numDisplay.innerText.slice(0, numDisplay.innerText.length - 1);
-    }
-    if (counter == 1 && (keyTarget.innerText == '-' ||
-        keyTarget.innerText == '+' ||
-        keyTarget.innerText == '/' ||
-        keyTarget.innerText == '*')) {
-        lastUsed = keyTarget.innerText;
-        let tempArray = numDisplay.innerText.split(keyTarget.innerText);
-        disArray = [tempArray[0], ' ', keyTarget.innerText, " "];
-    }
-//check here
-    if (counter == 2 && keyTarget.innerText == '=') {
-        lastUsed = keyTarget.innerText;
-        counter = 0;
-        let tempArray = numDisplay.innerText.split(`${lastUsed}`);
-        disArray.push(tempArray[tempArray.length - 2]);
-        evaluation();
-    }
+        if (keyTarget == ".") {
+            numDisplay.innerText += keyTarget
+            opCounter = 0;
+        };
+        if (numDisplay.innerText != ".") {
+            add.disabled = false;
+            multiply.disabled = false;
+            divide.disabled = false;
+            equals.disabled = false;
+        }
 
-    else if (counter == 2 &&
-        (keyTarget.innerText == '-' ||
-        keyTarget.innerText == '+' ||
-        keyTarget.innerText == '/' ||
-        keyTarget.innerText == '*')) {
-        counter = 0;
-        let tempArray = numDisplay.innerText.split(`${lastUsed}`);
-        disArray.push(tempArray[tempArray.length - 2]);
-        lastUsed = keyTarget.innerText;
-        counter = 1;
-        evaluation(disArray);
+
+
+        if (keyTarget == '-' && numDisplay.innerText == '') {
+            numDisplay.innerText += '-';
+        }
+        //Check here: How do I exchange operators?
+        //How do I make sure extra operators are not added to the display?
+        //How do I make sure the counter is added to the second time? Subtract when moving on to a non operator input.
+        else if (opString.includes(keyTarget)) {
+            if (opCounter < 1) {
+                opCounter++;
+                counter++;
+                if (counter < 2) numDisplay.innerText += keyTarget;
+            }
+            else if (counter < 2 && opCounter == 1) {
+                numDisplay.innerText = numDisplay.innerText.slice(0, numDisplay.innerText.length - 1) + keyTarget;
+
+            }
+
+        }
+
+
+        else if (keyTarget == 'C') {
+            numDisplay.innerText = '';
+            if (numDisplay.innerText == "") {
+                add.disabled = true;
+                multiply.disabled = true;
+                divide.disabled = true;
+                equals.disabled = true;
+            }
+            counter = 0;
+            disArray = [];
+        }
+        else if (keyTarget.className == 'backspace') {
+            numDisplay.innerText = numDisplay.innerText.slice(0, numDisplay.innerText.length - 1);
+        }
+
+        if (counter == 1 && (keyTarget == '-' ||
+            keyTarget == '+' ||
+            keyTarget == '/' ||
+            keyTarget == '*')) {
+            firstSplit(keyTarget);
+        }
+
+        if (counter == 1 && keyTarget == '=') {
+            counter = 0;
+            let tempArray = numDisplay.innerText.split(`${lastUsed}`);
+            lastUsed = '';
+            disArray.push(tempArray[tempArray.length - 1]);
+            if (evaluation(disArray, lastUsed) == '') {
+
+            };
+        }
+
+        else if (counter == 2 &&
+            (keyTarget == '-' ||
+                keyTarget == '+' ||
+                keyTarget == '/' ||
+                keyTarget == '*')) {
+            counter = 0;
+            let tempArray = numDisplay.innerText.split(`${lastUsed}`);
+            disArray.push(tempArray[tempArray.length - 1]);
+            lastUsed = keyTarget;
+            counter = 1;
+            evaluation(disArray, lastUsed);
+        }
+
     }
+}
+
+window.addEventListener('keydown', (e) => {
+    keyTarget = e.key;
+    if(keyTarget == 'Enter') keyTarget = '=';
+    addToDisplay(keyTarget);
 
 })
 
+keypad.addEventListener('click', (e) => {
 
+    keyTarget = e.target.innerText;
+    addToDisplay(keyTarget);
 
+})
 
-// Use parseFloat to receive a number up until a non number. 
-
-
-//Have input go through processing after the second operator(every operator beside -)
-//And the second or third operator for -, based on if the input starts with -. 
-
-//-55+44+
-//-55-44-
-//-55-44+
-//55+55-
-
-//There can be, max, only three - and two of the other operators. 
-//Have input go through processing after the second operator(every operator beside -)
-//Counter for every time an operator is used, subtract one if the begginning operator is -?
-//Figure out how to use a regex for non numeric values. (anki)
-//Have a value that holds the last used operator. 
-//If an operator was used and it wasn't the beginning of the string, assign it to this variable.
-//split on last inputed operator. What about equal sign 
-//if it value starts with -, split on operator, but add the negative in from
-
-//Don't allow +, *, / or = to be used if the display is empty
-//if an operator is used check if it is the only character in the input. If so, do not add it
-//to the operator counter do not store operator in lastUsed variable.
-//if not, add 1 to operator count.
-//if operator count is equal to 1 and an operator was used, add the operator to the lastUsed variable
-//If operator count is equal to two and equal operator was used change operator count to 0.
-// Split display by lastUsed variable.
-//If operator count is equal to two and another operator is used, change operator count to 1,
-//split display based on lastUsed variable and assign operator to lastUsed.  
+//How do you exchange operators
+//How do make sure that if the final result is equal to zero you cannot add a number to the display after 0
