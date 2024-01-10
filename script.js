@@ -80,9 +80,18 @@ function firstSplit(operator) {
     let tempArray = numDisplay.innerText.split(operator);
     disArray = [tempArray[0], operator];
 }
+//If there isnt an operator check if there is a decimal, if there isn't, add one. 
+//else check if there is more than 2 decimals, if not add one.
 
+function addToDisplay(keyTarget) {
+    const decimalObj = numDisplay.innerText.split("").reduce((obj, char) => {
+        if (obj[char] == undefined) obj[char] = 0;
 
-function addToDisplay(keyTarget){
+        obj[char]++;
+
+        return obj;
+
+    }, {})
 
     if ((numDisplay.innerText == '0' || numDisplay.innerText == '-0') && numString.includes(keyTarget, ".")) numDisplay.innerText = "0";
     else {
@@ -92,9 +101,11 @@ function addToDisplay(keyTarget){
             numDisplay.innerText += keyTarget;
         }
         if (keyTarget == ".") {
-            numDisplay.innerText += keyTarget
-            opCounter = 0;
+            const arrayTrue = numDisplay.innerText.split("").map(char => opString.includes(char));
+            if (!numDisplay.innerText.includes(`${opString}`) && decimalObj['.'] == undefined) numDisplay.innerText += keyTarget;
+            if (arrayTrue.includes(true) && decimalObj['.'] == 1) numDisplay.innerText += keyTarget
         };
+
         if (numDisplay.innerText != ".") {
             add.disabled = false;
             multiply.disabled = false;
@@ -135,7 +146,10 @@ function addToDisplay(keyTarget){
             disArray = [];
         }
         else if (keyTarget.className == 'backspace' || keyTarget == 'Backspace') {
-            numDisplay.innerText = numDisplay.innerText.slice(0, numDisplay.innerText.length - 1);
+            if (!opString.includes(`${numDisplay.innerText.split("")[numDisplay.innerText.length - 1]}`)) {
+                numDisplay.innerText = numDisplay.innerText.slice(0, numDisplay.innerText.length - 1);
+            }
+
         }
 
         if (counter == 1 && (keyTarget == '-' ||
@@ -146,13 +160,15 @@ function addToDisplay(keyTarget){
         }
 
         if (counter == 1 && keyTarget == '=') {
-            counter = 0;
-            let tempArray = numDisplay.innerText.split(`${lastUsed}`);
-            lastUsed = '';
-            disArray.push(tempArray[tempArray.length - 1]);
-            if (evaluation(disArray, lastUsed) == '') {
+            if (!opString.includes(`${numDisplay.innerText.split("")[numDisplay.innerText.length - 1]}`)) {
+                counter = 0;
+                let tempArray = numDisplay.innerText.split(`${lastUsed}`);
+                lastUsed = '';
+                disArray.push(tempArray[tempArray.length - 1]);
+                if (evaluation(disArray, lastUsed) == '') {
 
-            };
+                };
+            }
         }
 
         else if (counter == 2 &&
@@ -173,19 +189,65 @@ function addToDisplay(keyTarget){
 
 window.addEventListener('keydown', (e) => {
     keyTarget = e.key;
-    // console.log(keyTarget);
-    if(keyTarget == 'Enter') keyTarget = '=';
-    if(keyTarget == 'Escape') keyTarget = 'C';
-    addToDisplay(keyTarget);
+    const arrTest1 = numDisplay.innerText.split("");
+    const arrTestOp = opString.split(",");
+    const arrBool = arrTest1.map(char => arrTestOp.includes(char))
+    if (numDisplay.innerText.length == 6 && arrBool.filter(bool => bool).join("")) addToDisplay(keyTarget);
+    if (numDisplay.innerText.length > 6 && numDisplay.innerText.length < 9) {
+        if (keyTarget == 'Enter') keyTarget = '=';
+        addToDisplay(keyTarget);
+    }
+    else if (opString.includes(keyTarget)) {
+        addToDisplay(keyTarget);
+    }
+    if (keyTarget == 'Escape') {
+        keyTarget = 'C';
+        addToDisplay(keyTarget);
+    }
+    if (numDisplay.innerText.length < 6) {
+        if (keyTarget == 'Enter') keyTarget = '=';
+        addToDisplay(keyTarget);
+
+    }
+    else {
+        if (!numString.includes(keyTarget) && keyTarget != '.') addToDisplay(keyTarget);
+    }
+    if (keyTarget == 'Enter') {
+        keyTarget = '=';
+        addToDisplay(keyTarget);
+    }
 
 })
 
 keypad.addEventListener('click', (e) => {
-
     keyTarget = e.target.innerText;
-    addToDisplay(keyTarget);
+    const arrTest1 = numDisplay.innerText.split("");
+    const arrTestOp = opString.split(",");
+    const arrBool = arrTest1.map(char => arrTestOp.includes(char))
+    if (numDisplay.innerText.length == 6 && arrBool.filter(bool => bool).join("")) addToDisplay(keyTarget);
+    if (numDisplay.innerText.length > 6 && numDisplay.innerText.length < 9) {
+        if (keyTarget == 'Enter') keyTarget = '=';
+        addToDisplay(keyTarget);
+    }
+    else if (opString.includes(keyTarget)) {
+        addToDisplay(keyTarget);
+    }
 
+    if (keyTarget == 'C') {
+        addToDisplay(keyTarget);
+    }
+    if (numDisplay.innerText.length < 6) {
+        if (keyTarget == 'Enter') keyTarget = '=';
+        addToDisplay(keyTarget);
+
+    }
+    else {
+        if (!numString.includes(keyTarget) && keyTarget != '.') addToDisplay(keyTarget);
+    }
+    if (e.target.className == 'backspace') {
+        keyTarget = e.target;
+        addToDisplay(keyTarget);
+    }
 })
 
-//How do you exchange operators
-//How do make sure that if the final result is equal to zero you cannot add a number to the display after 0
+//Fix Backspace on click
